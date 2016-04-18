@@ -1,6 +1,7 @@
 package com.dance2die.demoandroidudemynotes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+
+import java.util.HashSet;
 
 public class EditYourNote extends AppCompatActivity implements TextWatcher {
 
@@ -52,6 +55,17 @@ public class EditYourNote extends AppCompatActivity implements TextWatcher {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         MainActivity.notes.set(noteId, s.toString());
         MainActivity.arrayAdapter.notifyDataSetChanged();
+
+        if (MainActivity.set == null){
+            MainActivity.set = new HashSet<String>();
+        } else {
+            MainActivity.set.clear();
+        }
+
+        MainActivity.set.addAll(MainActivity.notes);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+        sharedPreferences.edit().putStringSet("notes", MainActivity.set).apply();
+
     }
 
     @Override
