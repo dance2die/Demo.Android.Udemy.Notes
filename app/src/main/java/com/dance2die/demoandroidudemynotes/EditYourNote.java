@@ -6,10 +6,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-public class EditYourNote extends AppCompatActivity {
+public class EditYourNote extends AppCompatActivity implements TextWatcher {
+
+    private int noteId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +34,28 @@ public class EditYourNote extends AppCompatActivity {
 
         EditText editText = (EditText) findViewById(R.id.editText);
         Intent i = getIntent();
-        int noteId = i.getIntExtra("noteId", -1);
+        noteId = i.getIntExtra("noteId", -1);
 
         if (noteId != -1){
             editText.setText(MainActivity.notes.get(noteId));
         }
+
+        editText.addTextChangedListener(this);
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        MainActivity.notes.set(noteId, s.toString());
+        MainActivity.arrayAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }
