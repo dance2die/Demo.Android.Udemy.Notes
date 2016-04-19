@@ -1,5 +1,7 @@
 package com.dance2die.demoandroidudemynotes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -66,6 +68,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Are you sure?")
+                        .setMessage("Do you want to delete note?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                notes.remove(position);
+
+                                if (set == null){
+                                    set = new HashSet<String>();
+                                } else {
+                                    set.clear();
+                                }
+                                set.addAll(MainActivity.notes);
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+                                sharedPreferences.edit().putStringSet("notes", set).apply();
+
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -83,7 +116,22 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.add) {
+            notes.add("");
+            if (set == null){
+                set = new HashSet<String>();
+            } else {
+                set.clear();
+            }
+            set.addAll(MainActivity.notes);
+            SharedPreferences sharedPreferences = this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+            sharedPreferences.edit().putStringSet("notes", set).apply();
+
+            Intent i = new Intent(getApplicationContext(), EditYourNote.class);
+            i.putExtra("noteId", notes.size() - 1);
+            startActivity(i);
+
+
             return true;
         }
 
