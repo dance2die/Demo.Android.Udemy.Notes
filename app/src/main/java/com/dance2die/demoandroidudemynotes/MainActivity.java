@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                                     set.clear();
                                 }
                                 set.addAll(MainActivity.notes);
-                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
                                 sharedPreferences.edit().putStringSet("notes", set).apply();
 
                                 arrayAdapter.notifyDataSetChanged();
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         .show();
 
 
-                return false;
+                return true;
             }
         });
     }
