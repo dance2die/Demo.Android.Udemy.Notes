@@ -64,6 +64,7 @@ public class EditYourNote extends AppCompatActivity implements TextWatcher {
 
         MainActivity.set.addAll(MainActivity.notes);
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+        sharedPreferences.edit().remove("notes").apply();
         sharedPreferences.edit().putStringSet("notes", MainActivity.set).apply();
 
     }

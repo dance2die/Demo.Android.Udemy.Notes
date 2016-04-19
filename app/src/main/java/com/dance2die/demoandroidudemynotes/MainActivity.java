@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 set.addAll(MainActivity.notes);
                                 SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+                                sharedPreferences.edit().remove("notes").apply();
                                 sharedPreferences.edit().putStringSet("notes", set).apply();
 
                                 arrayAdapter.notifyDataSetChanged();
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             }
             set.addAll(MainActivity.notes);
             SharedPreferences sharedPreferences = this.getSharedPreferences("com.dance2die.demoandroidudemynotes", MODE_PRIVATE);
+            sharedPreferences.edit().remove("notes").apply();
             sharedPreferences.edit().putStringSet("notes", set).apply();
 
             Intent i = new Intent(getApplicationContext(), EditYourNote.class);
